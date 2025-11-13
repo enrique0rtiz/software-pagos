@@ -145,12 +145,6 @@ router.post('/', async (req, res) => {
       en_mailing, email, observaciones
     } = req.body;
 
-    if (!anio || !nombre || !apellidos) {
-      return res.status(400).json({ 
-        error: 'Los campos anio, nombre y apellidos son requeridos' 
-      });
-    }
-
     const fechaNacimientoParsed = parseDate(fecha_nacimiento);
 
     // Convertir pago_metodo a las 3 columnas booleanas
@@ -210,12 +204,6 @@ router.put('/:id', async (req, res) => {
       direccion, ciudad, codigo_postal, provincia, telf1, telf2, nif,
       en_mailing, email, observaciones
     } = req.body;
-
-    if (!anio || !nombre || !apellidos) {
-      return res.status(400).json({ 
-        error: 'Los campos anio, nombre y apellidos son requeridos' 
-      });
-    }
 
     const fechaNacimientoParsed = parseDate(fecha_nacimiento);
 
