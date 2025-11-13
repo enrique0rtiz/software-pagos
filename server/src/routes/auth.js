@@ -1,8 +1,24 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const router = express.Router();
 
+// Configurar rate limiter para login
+// Permite máximo 5 intentos por IP cada 15 minutos
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 5, // Máximo 5 intentos
+  message: {
+    error: 'Demasiados intentos de inicio de sesión. Por favor, intente de nuevo en 15 minutos.'
+  },
+  standardHeaders: true, // Devuelve info de rate limit en los headers `RateLimit-*`
+  legacyHeaders: false, // Deshabilita los headers `X-RateLimit-*`
+  // Función para identificar la IP del cliente
+  skipSuccessfulRequests: false, // Contar también los intentos exitosos
+  skipFailedRequests: false, // Contar también los intentos fallidos
+});
+
 // POST /api/auth/login
-router.post('/login', async (req, res) => {
+router.post('/login', loginLimiter, async (req, res) => {
   try {
     const { username, password } = req.body;
 

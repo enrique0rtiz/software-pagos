@@ -23,10 +23,18 @@ function Login({ onLogin }) {
         onLogin()
       }
     } catch (error) {
-      setError(
-        error.response?.data?.error || 
-        'Error al iniciar sesión. Verifique sus credenciales.'
-      )
+      if (error.response?.status === 429) {
+        // Error de rate limit
+        setError(
+          error.response?.data?.error || 
+          'Demasiados intentos de inicio de sesión. Por favor, espere unos minutos antes de intentar nuevamente.'
+        )
+      } else {
+        setError(
+          error.response?.data?.error || 
+          'Error al iniciar sesión. Verifique sus credenciales.'
+        )
+      }
     } finally {
       setLoading(false)
     }

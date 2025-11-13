@@ -3,6 +3,7 @@ const path = require('path');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 const { testConnection } = require('./db');
@@ -12,6 +13,21 @@ const clientsRoutes = require('./routes/clients');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Rate limiter general para todas las peticiones API
+// Permite 100 peticiones por IP cada 15 minutos
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutos
+  max: 100, // Máximo 100 peticiones
+  message: {
+    error: 'Demasiadas peticiones desde esta IP. Por favor, intente de nuevo más tarde.'
+  },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Aplicar rate limiter a todas las rutas /api/*
+app.use('/api/', apiLimiter);
 
 // Middleware
 app.use(cors({
