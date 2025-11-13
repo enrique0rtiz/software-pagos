@@ -1,0 +1,20 @@
+{
+  "name": "proyecto-railway",
+  "version": "1.0.0",
+  "description": "Aplicación web full-stack para gestión de pagos y clientes",
+  "scripts": {
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "build": "cd client && npm run build && cd ..",
+    "start": "cd server && node src/app.js",
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "cd server && nodemon src/app.js",
+    "dev:client": "cd client && npm run dev"
+  },
+  "keywords": ["railway", "postgresql", "express", "react"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
+
