@@ -14,6 +14,10 @@ const clientsRoutes = require('./routes/clients');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+// Confiar en proxies (necesario para Railway y rate limiting)
+// Railway actúa como proxy reverso, necesitamos confiar en el header X-Forwarded-For
+app.set('trust proxy', 1);
+
 // Rate limiter general para todas las peticiones API
 // Permite 100 peticiones por IP cada 15 minutos
 const apiLimiter = rateLimit({
